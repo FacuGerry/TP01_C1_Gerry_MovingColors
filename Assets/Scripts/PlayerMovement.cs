@@ -1,27 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Movement : MonoBehaviour
 {
+    [Header("Attributes")]
     public float velocity = 0.05f; //Velocidad predefinida para el movimiento
     public int rotation = 10; //Cuanto va a rotar el objeto
 
     //Declaracion de las teclas para poder modificarlas desde el inspector
-    public KeyCode GoUp;
-    public KeyCode GoDown;
-    public KeyCode GoLeft;
-    public KeyCode GoRight;
-    public KeyCode RotateRight;
-    public KeyCode RotateLeft;
-    public KeyCode ChangeColor;
+    [Header("Key bindings")]
+    [SerializeField] private KeyCode GoUp;
+    [SerializeField] private KeyCode GoDown;
+    [SerializeField] private KeyCode GoLeft;
+    [SerializeField] private KeyCode GoRight;
+    [SerializeField] private KeyCode RotateRight;
+    [SerializeField] private KeyCode RotateLeft;
+    [SerializeField] private KeyCode ChangeColor;
 
     void Update()
     {
-        //Cada if representa el toque a una tecla, y cada uno con sus propios movimientos o transforms
+
+        PlayerMove();
+        PlayerRotate();
+        PlayerChangeColor();
+
+    }
+
+    private void PlayerMove()
+    {
+
         if (Input.GetKey(GoUp)) //Moverse arriba
         {
             transform.position = transform.position + new Vector3(0, velocity, 0);
@@ -42,6 +48,11 @@ public class Movement : MonoBehaviour
             transform.position = transform.position + new Vector3(velocity, 0, 0);
         }
 
+    }
+
+    private void PlayerRotate()
+    {
+
         if (Input.GetKeyDown(RotateRight)) //Rotar a la derecha 10°
         {
             transform.Rotate(0, 0, rotation);
@@ -52,10 +63,16 @@ public class Movement : MonoBehaviour
             transform.Rotate(0, 0, -rotation);
         }
 
+    }
+
+    private void PlayerChangeColor()
+    {
+
         if (Input.GetKeyUp(ChangeColor)) //Cambiar a un color random
         {
             GetComponent<SpriteRenderer>().color = Random.ColorHSV();
         }
 
     }
+
 }
